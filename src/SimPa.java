@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.security.KeyPair;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,11 +21,9 @@ public class SimPa {
         String accepted[] = line.split(",");
         String startingState = reader.readLine();
         String startingStackSym = reader.readLine();
-
         Map<String[], String[]> transitions = new HashMap<>();
         line = reader.readLine();
         while (line != null) {
-
             String from[] = new String[3];
             String to[] = new String[2];
             from[0] = line.split("->")[0].split(",")[0];
@@ -38,16 +34,11 @@ public class SimPa {
             transitions.put(from, to);
             line = reader.readLine();
         }
-
-        //transitions.values().forEach(k -> System.out.println(k[0] +" "+k[1].toCharArray()[0]));
-
         for (String st : allInputs) {
             Stack<String> stack = new Stack<>();
             stack.push(startingStackSym);
             String currentState = startingState;
-            StringBuilder currentStateTemp = new StringBuilder();
-            boolean exist = false;
-            boolean notDone = true;
+            boolean exist;
             AbstractMap.SimpleEntry<Boolean, String> result = new AbstractMap.SimpleEntry<>(null,null);
             print(stack,currentState);
             for (String inp : st.split(",")) {
@@ -57,59 +48,11 @@ public class SimPa {
                 if(!exist){
                     break;
                 }
-               // print(stack,currentState);
-                //while(notDone) {
-//                    print(stack, currentSta   te);
-//                    exist = true;
-//                    for (var entry : transitions.entrySet()) {
-//                        if (entry.getKey()[0].equals(currentState) && entry.getKey()[1].equals(inp)
-//                                && entry.getKey()[2].equals(stack.peek())) {
-//                            exist = false;
-//                            // System.out.println();
-//                            //System.out.print("for: "+currentState+" and "+inp+"and "+stack.peek()+" pushing: ");
-//                            //System.out.println(entry.getValue()[1]);
-//                            // System.out.println();
-//                            stack.pop();
-//                            currentState = entry.getValue()[0];
-//                            for (int i = entry.getValue()[1].toCharArray().length - 1; i >= 0; i--) {
-//                                char c = entry.getValue()[1].toCharArray()[i];
-//                                if (c != '$') {
-//                                    stack.push(String.valueOf(c));
-//                                }
-//                            }
-//                            break;
-//                        }
-//                    }
-
-                // AbstractMap.SimpleEntry<Boolean, String> result = checkForEmpty(stack, currentState, transitions  );
-                // if(result.getKey()){
-                //     currentState=result.getValue();
-                //     notDone=true;
-                // }else{
-                //     notDone=false;
-                // }
-
-
-
-
-                //}
-
-
             }
-
-
-
-
-
-
-
-
             if(result.getKey()){
-                    //currentState=result.getValue();
                     boolean one = false;
                     for (String state : accepted) {
                         if (currentState.equals(state)) {
-                            //print(stack,currentState);
                             System.out.print("1");
                             one = true;
                             break;
@@ -121,20 +64,6 @@ public class SimPa {
                         if (result2.getKey()) {
                             print(stack, result2.getValue());
                             currentState =result2.getValue();
-//                             one = false;
-//                            for (String state : accepted) {
-//                                if (currentState.equals(state)) {
-//                                    //print(stack,currentState);
-//                                    System.out.print("1");
-//                                    one = true;
-//                                    break;
-//                                }
-//                             else {
-//                                //print(stack,currentState);
-//                                System.out.print("0");
-//                            }
-//                            }
-
                         } else {
                             break;
 
@@ -142,8 +71,6 @@ public class SimPa {
                             one=false;
                             for (String state : accepted) {
                                 if (currentState.equals(state)) {
-                                    //print(stack,currentState);
-                                    //System.out.print("1");
                                     one = true;
                                     break;
                                 }
@@ -152,7 +79,6 @@ public class SimPa {
                         one=false;
                         for (String state : accepted) {
                             if (currentState.equals(state)) {
-                                //print(stack,currentState);
                                 System.out.print("1");
                                 one = true;
                                 break;
@@ -164,18 +90,8 @@ public class SimPa {
                     }
                     System.out.println();
                 }
-
-                //if (exist || result.getKey()) {
-
-                // }
-                // else{
-                //    System.out.println("0");
-            //}
-
         }
     }
-
-
 
     public static void print(Stack<String> stack, String currentState) {
         System.out.print(currentState + "#");
@@ -193,12 +109,7 @@ public class SimPa {
     public static AbstractMap.SimpleEntry<Boolean, String> checkForEmpty(Stack<String> stack, String currentState, Map<String[], String[]> transitions) {
         boolean notDone = true;
         boolean result = false;
-//        if(stack.size()==0) {
-//            System.out.println("fail|0");
-//            return  new AbstractMap.SimpleEntry<>(false, currentState);}
-
         while (notDone) {
-
             for (var entry : transitions.entrySet()) {
                 if (entry.getKey()[0].equals(currentState) && entry.getKey()[1].equals("$")
                         && entry.getKey()[2].equals(stack.peek())) {
@@ -211,14 +122,11 @@ public class SimPa {
                             stack.push(String.valueOf(c));
                         }
                     }
-                  //
                     break;
                 }
             }
-           // print(stack, currentState);
             notDone = false;
         }
-        //print(stack, currentState);
         return new AbstractMap.SimpleEntry<>(result, currentState);
     }
 
@@ -230,12 +138,7 @@ public class SimPa {
             for (var entry : transitions.entrySet()) {
                 if (entry.getKey()[0].equals(currentState) && entry.getKey()[1].equals(sym)
                         && entry.getKey()[2].equals(stack.peek())) {
-                        //print(stack, currentState);
                     exist = true;
-                    // System.out.println();
-                    //System.out.print("for: "+currentState+" and "+inp+"and "+stack.peek()+" pushing: ");
-                    //System.out.println(entry.getValue()[1]);
-                    // System.out.println();
                     stack.pop();
                     currentState = entry.getValue()[0];
                     for (int i = entry.getValue()[1].toCharArray().length - 1; i >= 0; i--) {
@@ -246,40 +149,23 @@ public class SimPa {
                     }
                     break;
                 }
-
-
-
-
             }
-        //ispis svaki put dok se pozove funkcija (neovisno o tome jel postoij tranzicija ili ne)
         if (!exist) {
-
-         //   AbstractMap.SimpleEntry<Boolean, String> result = checkForTransition(stack, currentState,"$", transitions);
             AbstractMap.SimpleEntry<Boolean, String> result = checkForEmpty(stack, currentState, transitions);
-
-
             if (!result.getKey()) {
                 System.out.println("fail|0");
                 return new AbstractMap.SimpleEntry<>(false, currentState);
-
             }
             else{
-                //currentState=result.getValue();
-
                 currentState=result.getValue();
                 print(stack,currentState);
                 result = checkForTransition(stack, currentState,sym,transitions);
-
-
             }
             return result;
-
         }
         else{
             print(stack,currentState);
-
         }
-
        return new AbstractMap.SimpleEntry<>(exist, currentState);
     }
 }
